@@ -1,0 +1,136 @@
+------------------------------------------------------------
+-- 1 TOTAL SALES
+------------------------------------------------------------
+
+SELECT
+SUM(P.Price*OD.Quantity) AS Total_Sales
+FROM Order_Details OD
+JOIN Products P
+ON OD.Product_ID=P.Product_ID;
+
+------------------------------------------------------------
+-- 2 REVENUE BY OUTLET
+------------------------------------------------------------
+
+SELECT
+O.Outlet_Name,
+SUM(P.Price*OD.Quantity) AS Revenue
+FROM Orders ORS
+JOIN Outlets O
+ON ORS.Outlet_ID=O.Outlet_ID
+JOIN Order_Details OD
+ON ORS.Order_ID=OD.Order_ID
+JOIN Products P
+ON OD.Product_ID=P.Product_ID
+GROUP BY O.Outlet_Name
+ORDER BY Revenue DESC;
+
+------------------------------------------------------------
+-- 3 MOST SOLD PIZZA
+------------------------------------------------------------
+
+SELECT
+P.Pizza_Name,
+SUM(OD.Quantity) Total_Quantity
+FROM Products P
+JOIN Order_Details OD
+ON P.Product_ID=OD.Product_ID
+GROUP BY P.Pizza_Name
+ORDER BY Total_Quantity DESC
+LIMIT 1;
+
+------------------------------------------------------------
+-- 4 LEAST SOLD PIZZA
+------------------------------------------------------------
+
+SELECT
+P.Pizza_Name,
+SUM(OD.Quantity) Total_Quantity
+FROM Products P
+JOIN Order_Details OD
+ON P.Product_ID=OD.Product_ID
+GROUP BY P.Pizza_Name
+ORDER BY Total_Quantity
+LIMIT 1;
+
+------------------------------------------------------------
+-- 5 VEG VS NON VEG SALES
+------------------------------------------------------------
+
+SELECT
+Category,
+SUM(P.Price*OD.Quantity) AS Revenue
+FROM Products P
+JOIN Order_Details OD
+ON P.Product_ID=OD.Product_ID
+GROUP BY Category;
+
+------------------------------------------------------------
+-- 6 ONLINE VS OFFLINE ORDERS
+------------------------------------------------------------
+
+SELECT
+Order_Type,
+COUNT(*) Total_Orders
+FROM Orders
+GROUP BY Order_Type;
+
+------------------------------------------------------------
+-- 7 BEST MARKETING CAMPAIGN
+------------------------------------------------------------
+
+SELECT
+M.Campaign_Name,
+SUM(P.Price*OD.Quantity) Revenue
+FROM Marketing M
+JOIN Orders O
+ON M.Campaign_ID=O.Campaign_ID
+JOIN Order_Details OD
+ON O.Order_ID=OD.Order_ID
+JOIN Products P
+ON OD.Product_ID=P.Product_ID
+GROUP BY M.Campaign_Name
+ORDER BY Revenue DESC;
+
+------------------------------------------------------------
+-- 8 PEAK SALES DAY
+------------------------------------------------------------
+
+SELECT
+Order_Date,
+SUM(P.Price*OD.Quantity) Revenue
+FROM Orders O
+JOIN Order_Details OD
+ON O.Order_ID=OD.Order_ID
+JOIN Products P
+ON OD.Product_ID=P.Product_ID
+GROUP BY Order_Date
+ORDER BY Revenue DESC;
+
+
+------------------------------------------------------------
+-- 10 AVERAGE EMPLOYEE SALARY
+------------------------------------------------------------
+
+SELECT
+AVG(Salary) AS Average_Salary
+FROM Employees;
+
+------------------------------------------------------------
+-- 11 OUTLET WISE NUMBER OF EMPLOYEES
+------------------------------------------------------------
+
+SELECT
+O.Outlet_Name,
+COUNT(E.Employee_ID) Employees
+FROM Outlets O
+LEFT JOIN Employees E
+ON O.Outlet_ID=E.Outlet_ID
+GROUP BY O.Outlet_Name;
+
+------------------------------------------------------------
+-- 12 HIGHEST PRICED PIZZA
+------------------------------------------------------------
+
+SELECT * FROM Products
+ORDER BY Price DESC;
